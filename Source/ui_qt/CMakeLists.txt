@@ -305,6 +305,15 @@ if(QT_LRELEASE_EXECUTABLE)
 			VERBATIM
 		)
 	endforeach()
+
+	#Bundle Qt's own Simplified Chinese catalogs (standard buttons, dialogs, ...)
+	#so that QPlatformTheme/QMessageBox/QDialogButtonBox are localized too.
+	get_filename_component(QT_TOOLS_DIR "${QT_LRELEASE_EXECUTABLE}" DIRECTORY)
+	get_filename_component(QT_TRANSLATIONS_DIR "${QT_TOOLS_DIR}/../translations" ABSOLUTE)
+	if(EXISTS "${QT_TRANSLATIONS_DIR}")
+		file(GLOB QT_SYSTEM_QM_FILES "${QT_TRANSLATIONS_DIR}/qt*_zh_CN.qm")
+		list(APPEND UI_QM_FILES ${QT_SYSTEM_QM_FILES})
+	endif()
 else()
 	message(STATUS "lrelease not found, UI translations will not be built.")
 endif()

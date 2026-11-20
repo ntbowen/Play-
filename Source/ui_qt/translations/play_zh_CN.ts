@@ -1012,6 +1012,81 @@ Please try again.</source>
     </message>
 </context>
 <context>
+    <name>QPlatformTheme</name>
+    <message>
+        <source>Abort</source>
+        <translation>中止</translation>
+    </message>
+    <message>
+        <source>Apply</source>
+        <translation>应用</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>取消</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation>关闭</translation>
+    </message>
+    <message>
+        <source>Discard</source>
+        <translation>放弃</translation>
+    </message>
+    <message>
+        <source>Help</source>
+        <translation>帮助</translation>
+    </message>
+    <message>
+        <source>Ignore</source>
+        <translation>忽略</translation>
+    </message>
+    <message>
+        <source>N&amp;o to All</source>
+        <translation>全部否(&amp;O)</translation>
+    </message>
+    <message>
+        <source>&amp;No</source>
+        <translation>否(&amp;N)</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation>确定</translation>
+    </message>
+    <message>
+        <source>Open</source>
+        <translation>打开</translation>
+    </message>
+    <message>
+        <source>Reset</source>
+        <translation>重置</translation>
+    </message>
+    <message>
+        <source>Restore Defaults</source>
+        <translation>恢复默认</translation>
+    </message>
+    <message>
+        <source>Retry</source>
+        <translation>重试</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation>保存</translation>
+    </message>
+    <message>
+        <source>Save All</source>
+        <translation>全部保存</translation>
+    </message>
+    <message>
+        <source>&amp;Yes</source>
+        <translation>是(&amp;Y)</translation>
+    </message>
+    <message>
+        <source>Yes to &amp;All</source>
+        <translation>全部是(&amp;A)</translation>
+    </message>
+</context>
+<context>
     <name>QtUtils</name>
     <message>
         <location filename="QtUtils.cpp"/>
@@ -1278,6 +1353,51 @@ Please try again.</source>
         <location filename="settingsdialog.ui"/>
         <source>Warning: Changing these settings during gameplay can produce unexpected results.</source>
         <translation>警告：在游戏过程中更改这些设置可能会产生意外结果。</translation>
+    </message>
+    <message>
+        <location filename="settingsdialog.cpp"/>
+        <source>Physical Device Info:</source>
+        <translation>物理设备信息：</translation>
+    </message>
+    <message>
+        <location filename="settingsdialog.cpp"/>
+        <source>Driver Version:</source>
+        <translation>驱动版本：</translation>
+    </message>
+    <message>
+        <location filename="settingsdialog.cpp"/>
+        <source>Vendor ID:</source>
+        <translation>厂商 ID：</translation>
+    </message>
+    <message>
+        <location filename="settingsdialog.cpp"/>
+        <source>Device ID:</source>
+        <translation>设备 ID：</translation>
+    </message>
+    <message>
+        <location filename="settingsdialog.cpp"/>
+        <source>Device Name:</source>
+        <translation>设备名称：</translation>
+    </message>
+    <message>
+        <location filename="settingsdialog.cpp"/>
+        <source>Device Type:</source>
+        <translation>设备类型：</translation>
+    </message>
+    <message>
+        <location filename="settingsdialog.cpp"/>
+        <source>API Version:</source>
+        <translation>API 版本：</translation>
+    </message>
+    <message>
+        <location filename="settingsdialog.cpp"/>
+        <source>Device not suitable: Doesn't support </source>
+        <translation>设备不适用：不支持 </translation>
+    </message>
+    <message>
+        <location filename="settingsdialog.cpp"/>
+        <source>Got exception while scanning devices: </source>
+        <translation>扫描设备时发生异常：</translation>
     </message>
 </context>
 <context>
