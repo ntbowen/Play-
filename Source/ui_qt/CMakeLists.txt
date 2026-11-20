@@ -334,12 +334,6 @@ if(TARGET_PLATFORM_MACOS)
 	foreach(qm_file ${UI_QM_FILES})
 		set_source_files_properties(${qm_file} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources/translations")
 	endforeach()
-	if(UI_QM_FILES)
-		add_custom_command(TARGET Play POST_BUILD
-			COMMAND ${CMAKE_COMMAND} -E make_directory "$<TARGET_FILE_DIR:Play>/../Resources/translations"
-			COMMAND ${CMAKE_COMMAND} -E copy ${UI_QM_FILES} "$<TARGET_FILE_DIR:Play>/../Resources/translations"
-		)
-	endif()
 	# Set a custom plist file for the app bundle
 	# NOTE: for these values to be used Info.plist has to be edited
 	# NOTE: from cmake 3.7.0 you can use %b for month name abbreviations
