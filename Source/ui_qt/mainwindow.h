@@ -47,6 +47,7 @@ public:
 	void LoadCDROM(fs::path filePath);
 	void BootArcadeMachine(fs::path);
 	void loadState(int);
+	void OnUiLanguageChanged();
 
 #ifdef DEBUGGER_INCLUDED
 	void ShowMainWindow();
@@ -95,7 +96,6 @@ private:
 	void UpdateGSHandlerLabel();
 	void SetupBootableView();
 	void SetupDebugger();
-	void OnUiLanguageChanged();
 
 	Ui::MainWindow* ui = nullptr;
 
