@@ -275,7 +275,7 @@ void MainWindow::SetupSoundHandler()
 		}
 		catch(const std::exception& ex)
 		{
-			m_msgLabel->setText(QString("Failed to create sound handler: %0").arg(QString::fromUtf8(ex.what())));
+			m_msgLabel->setText(tr("Failed to create sound handler: %0").arg(QString::fromUtf8(ex.what())));
 		}
 	}
 	else
@@ -310,7 +310,7 @@ void MainWindow::on_actionBoot_DiscImage_triggered()
 {
 	QStringList filters;
 	filters.push_back(QtUtils::GetDiscImageFormatsFilter());
-	filters.push_back("All files (*)");
+	filters.push_back(tr("All files (*)"));
 
 	QFileDialog dialog(this);
 	dialog.setDirectory(PathToQString(m_lastPath));
@@ -329,7 +329,7 @@ void MainWindow::on_actionBoot_DiscImage_triggered()
 			catch(const std::exception& e)
 			{
 				QMessageBox messageBox;
-				messageBox.critical(nullptr, "Error", e.what());
+				messageBox.critical(nullptr, tr("Error"), e.what());
 				messageBox.show();
 			}
 		}
@@ -353,7 +353,7 @@ void MainWindow::on_actionBoot_DiscImage_S3_triggered()
 			catch(const std::exception& e)
 			{
 				QMessageBox messageBox;
-				messageBox.critical(nullptr, "Error", e.what());
+				messageBox.critical(nullptr, tr("Error"), e.what());
 				messageBox.show();
 			}
 		}
@@ -370,7 +370,7 @@ void MainWindow::on_actionBoot_cdrom0_triggered()
 	catch(const std::exception& e)
 	{
 		QMessageBox messageBox;
-		messageBox.critical(nullptr, "Error", e.what());
+		messageBox.critical(nullptr, tr("Error"), e.what());
 		messageBox.show();
 	}
 }
@@ -394,7 +394,7 @@ void MainWindow::on_actionBoot_ELF_triggered()
 			catch(const std::exception& e)
 			{
 				QMessageBox messageBox;
-				messageBox.critical(nullptr, "Error", e.what());
+				messageBox.critical(nullptr, tr("Error"), e.what());
 				messageBox.show();
 			}
 		}
@@ -415,7 +415,7 @@ void MainWindow::BootElf(fs::path filePath)
 		m_lastOpenCommand = LastOpenCommand(BootType::ELF, filePath);
 		UpdateUI();
 	}
-	m_msgLabel->setText(QString("Loaded executable '%1'.")
+	m_msgLabel->setText(tr("Loaded executable '%1'.")
 	                        .arg(m_virtualMachine->m_ee->m_os->GetExecutableName()));
 }
 
@@ -440,7 +440,7 @@ void MainWindow::BootCDROM()
 		m_lastOpenCommand = LastOpenCommand(BootType::CD, filePath);
 		UpdateUI();
 	}
-	m_msgLabel->setText(QString("Loaded executable '%1' from cdrom0.")
+	m_msgLabel->setText(tr("Loaded executable '%1' from cdrom0.")
 	                        .arg(m_virtualMachine->m_ee->m_os->GetExecutableName()));
 }
 
@@ -450,13 +450,13 @@ void MainWindow::BootArcadeMachine(fs::path arcadeDefPath)
 	{
 		ArcadeUtils::BootArcadeMachine(m_virtualMachine, arcadeDefPath);
 		m_lastOpenCommand = LastOpenCommand(BootType::ARCADE, arcadeDefPath);
-		m_msgLabel->setText(QString("Started arcade machine '%1'.").arg(arcadeDefPath.filename().c_str()));
+		m_msgLabel->setText(tr("Started arcade machine '%1'.").arg(arcadeDefPath.filename().c_str()));
 		UpdateUI();
 	}
 	catch(const std::exception& e)
 	{
 		QMessageBox messageBox;
-		messageBox.critical(nullptr, "Error", e.what());
+		messageBox.critical(nullptr, tr("Error"), e.what());
 		messageBox.show();
 	}
 }
@@ -603,7 +603,7 @@ void MainWindow::updateStats()
 	m_fpsLabel->setText(QString("%1%2 f/s, %3 dc/f").arg(frames).arg(unlockedFps ? " (U)" : "").arg(dcpf));
 
 	auto eeUsageRatio = CStatsManager::ComputeCpuUsageRatio(cpuUtilisation.eeIdleTicks, cpuUtilisation.eeTotalTicks);
-	m_cpuUsageLabel->setText(QString("EE CPU: %1%").arg(static_cast<int>(eeUsageRatio)));
+	m_cpuUsageLabel->setText(tr("EE CPU: %1%").arg(static_cast<int>(eeUsageRatio)));
 
 	CStatsManager::GetInstance().ClearStats();
 }
@@ -611,7 +611,7 @@ void MainWindow::updateStats()
 void MainWindow::on_actionSettings_triggered()
 {
 	auto gs_index = CAppConfig::GetInstance().GetPreferenceInteger(PREF_VIDEO_GS_HANDLER);
-	SettingsDialog sd;
+	SettingsDialog sd(this);
 	sd.exec();
 	SetupSoundHandler();
 	if(m_virtualMachine != nullptr)
@@ -640,6 +640,28 @@ void MainWindow::on_actionSettings_triggered()
 	}
 }
 
+void MainWindow::OnUiLanguageChanged()
+{
+	ui->retranslateUi(this);
+#ifdef DEBUGGER_INCLUDED
+	if(debugMenuUi && m_debugMenu)
+	{
+		debugMenuUi->retranslateUi(m_debugMenu);
+	}
+	if(debugDockMenuUi && m_debugDockMenu)
+	{
+		debugDockMenuUi->retranslateUi(m_debugDockMenu);
+	}
+#endif
+	//The save/load state actions are created dynamically, rebuild them so
+	//their text is retranslated.
+	SetupSaveLoadStateSlots();
+	if(ui->bootablesView)
+	{
+		ui->bootablesView->Retranslate();
+	}
+}
+
 void MainWindow::SetupSaveLoadStateSlots()
 {
 	auto saveActions = ui->menuSave_States->actions();
@@ -658,17 +680,17 @@ void MainWindow::SetupSaveLoadStateSlots()
 	ui->menuLoad_States->clear();
 	for(int i = 0; i < 10; i++)
 	{
-		QString info = enable ? GetSaveStateInfo(i) : "Empty";
+		QString info = enable ? GetSaveStateInfo(i) : tr("Empty");
 
 		QAction* saveaction = new QAction(this);
-		saveaction->setText(QString("Save Slot %1 - %2").arg(i).arg(info));
+		saveaction->setText(tr("Save Slot %1 - %2").arg(i).arg(info));
 		saveaction->setEnabled(enable);
 		saveaction->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | (Qt::Key_0 + i)));
 		ui->menuSave_States->addAction(saveaction);
 		this->addAction(saveaction);
 
 		QAction* loadaction = new QAction(this);
-		loadaction->setText(QString("Load Slot %1 - %2").arg(i).arg(info));
+		loadaction->setText(tr("Load Slot %1 - %2").arg(i).arg(info));
 		loadaction->setEnabled(enable);
 		loadaction->setShortcut(QKeySequence(Qt::CTRL | (Qt::Key_0 + i)));
 		ui->menuLoad_States->addAction(loadaction);
@@ -690,14 +712,14 @@ void MainWindow::saveState(int stateSlot)
 	                                                         [this, stateSlot = stateSlot](const bool& succeeded) {
 		                                                         if(succeeded)
 		                                                         {
-			                                                         m_msgLabel->setText(QString("Saved state to slot %1.").arg(stateSlot));
+			                                                         m_msgLabel->setText(tr("Saved state to slot %1.").arg(stateSlot));
 			                                                         QString datetime = GetSaveStateInfo(stateSlot);
-			                                                         ui->menuSave_States->actions().at(stateSlot)->setText(QString("Save Slot %1 - %2").arg(stateSlot).arg(datetime));
-			                                                         ui->menuLoad_States->actions().at(stateSlot)->setText(QString("Load Slot %1 - %2").arg(stateSlot).arg(datetime));
+			                                                         ui->menuSave_States->actions().at(stateSlot)->setText(tr("Save Slot %1 - %2").arg(stateSlot).arg(datetime));
+			                                                         ui->menuLoad_States->actions().at(stateSlot)->setText(tr("Load Slot %1 - %2").arg(stateSlot).arg(datetime));
 		                                                         }
 		                                                         else
 		                                                         {
-			                                                         m_msgLabel->setText(QString("Error saving state to slot %1.").arg(stateSlot));
+			                                                         m_msgLabel->setText(tr("Error saving state to slot %1.").arg(stateSlot));
 		                                                         }
 	                                                         });
 }
@@ -710,14 +732,14 @@ void MainWindow::loadState(int stateSlot)
 	                                                         [this, stateSlot = stateSlot](const bool& succeeded) {
 		                                                         if(succeeded)
 		                                                         {
-			                                                         m_msgLabel->setText(QString("Loaded state from slot %1.").arg(stateSlot));
+			                                                         m_msgLabel->setText(tr("Loaded state from slot %1.").arg(stateSlot));
 #ifndef DEBUGGER_INCLUDED
 			                                                         m_virtualMachine->Resume();
 #endif
 		                                                         }
 		                                                         else
 		                                                         {
-			                                                         m_msgLabel->setText(QString("Error loading state from slot %1.").arg(stateSlot));
+			                                                         m_msgLabel->setText(tr("Error loading state from slot %1.").arg(stateSlot));
 		                                                         }
 	                                                         });
 }
@@ -732,7 +754,7 @@ QString MainWindow::GetSaveStateInfo(int stateSlot)
 	}
 	else
 	{
-		return "Empty";
+		return tr("Empty");
 	}
 }
 
@@ -742,12 +764,12 @@ void MainWindow::on_actionPause_Resume_triggered()
 	{
 		if(m_virtualMachine->GetStatus() == CVirtualMachine::PAUSED)
 		{
-			m_msgLabel->setText("Virtual machine resumed.");
+			m_msgLabel->setText(tr("Virtual machine resumed."));
 			m_virtualMachine->Resume();
 		}
 		else
 		{
-			m_msgLabel->setText("Virtual machine paused.");
+			m_msgLabel->setText(tr("Virtual machine paused."));
 			m_virtualMachine->Pause();
 		}
 	}
@@ -774,10 +796,10 @@ void MainWindow::closeEvent(QCloseEvent* event)
 
 		QMessageBox messageBox;
 
-		QCheckBox* showAgainCheckBox = new QCheckBox("Show this message next time", &messageBox);
+		QCheckBox* showAgainCheckBox = new QCheckBox(tr("Show this message next time"), &messageBox);
 		showAgainCheckBox->setChecked(true);
 
-		messageBox.setWindowTitle("Close Confirmation");
+		messageBox.setWindowTitle(tr("Close Confirmation"));
 		messageBox.setText(message);
 		messageBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
 		messageBox.setDefaultButton(QMessageBox::Yes);
@@ -826,7 +848,7 @@ void MainWindow::changeEvent(QEvent* event)
 
 void MainWindow::on_actionAbout_triggered()
 {
-	auto about = QString("Version %1 (%2)\nQt v%3 - zlib v%4")
+	auto about = tr("Version %1 (%2)\nQt v%3 - zlib v%4")
 	                 .arg(QString(PLAY_VERSION), __DATE__, QT_VERSION_STR, ZLIB_VERSION);
 	QMessageBox::about(this, this->windowTitle(), about);
 }
@@ -870,6 +892,7 @@ void MainWindow::RegisterPreferences()
 	CAppConfig::GetInstance().RegisterPreferenceBoolean(PREF_UI_PAUSEWHENFOCUSLOST, true);
 	CAppConfig::GetInstance().RegisterPreferenceBoolean(PREF_UI_SHOWEECPUUSAGE, false);
 	CAppConfig::GetInstance().RegisterPreferenceBoolean(PREF_UI_SHOWEXITCONFIRMATION, true);
+	CAppConfig::GetInstance().RegisterPreferenceInteger(PREF_UI_LANGUAGE, UI_LANGUAGE_SYSTEM);
 	CAppConfig::GetInstance().RegisterPreferenceInteger(PREF_VIDEO_GS_HANDLER, SettingsDialog::GS_HANDLERS::OPENGL);
 	CAppConfig::GetInstance().RegisterPreferenceString(PREF_INPUT_PAD1_PROFILE, "default");
 }
@@ -1079,7 +1102,7 @@ void MainWindow::DumpNextFrame()
 				    {
 					    auto dumpStream = Framework::CreateOutputStdStream(frameDumpPath.native());
 					    frameDump.Write(dumpStream);
-					    m_msgLabel->setText(QString("Dumped frame to '%1'.").arg(frameDumpFileName.c_str()));
+					    m_msgLabel->setText(tr("Dumped frame to '%1'.").arg(frameDumpFileName.c_str()));
 					    return;
 				    }
 			    }
@@ -1087,7 +1110,7 @@ void MainWindow::DumpNextFrame()
 		    catch(...)
 		    {
 		    }
-		    m_msgLabel->setText(QString("Failed to dump frame."));
+		    m_msgLabel->setText(tr("Failed to dump frame."));
 	    });
 }
 
@@ -1098,7 +1121,7 @@ void MainWindow::ToggleGsDraw()
 	bool newState = !gs->GetDrawEnabled();
 	gs->SetDrawEnabled(newState);
 	debugMenuUi->actionGsDrawEnabled->setChecked(newState);
-	m_msgLabel->setText(newState ? QString("GS Draw Enabled") : QString("GS Draw Disabled"));
+	m_msgLabel->setText(newState ? tr("GS Draw Enabled") : tr("GS Draw Disabled"));
 }
 
 #endif
@@ -1135,7 +1158,7 @@ void MainWindow::on_actionReset_triggered()
 	catch(const std::exception& e)
 	{
 		QMessageBox messageBox;
-		messageBox.critical(nullptr, "Error", e.what());
+		messageBox.critical(nullptr, tr("Error"), e.what());
 		messageBox.show();
 	}
 }
@@ -1218,7 +1241,7 @@ void MainWindow::SetupBootableView()
 				break;
 			default:
 				QMessageBox messageBox;
-				QString invalid("Invalid File Format.");
+				QString invalid(tr("Invalid File Format."));
 				messageBox.critical(this, this->windowTitle(), invalid);
 				messageBox.show();
 				break;
@@ -1228,7 +1251,7 @@ void MainWindow::SetupBootableView()
 		catch(const std::exception& e)
 		{
 			QMessageBox messageBox;
-			messageBox.critical(nullptr, "Error", e.what());
+			messageBox.critical(nullptr, tr("Error"), e.what());
 			messageBox.show();
 		}
 	};
@@ -1244,10 +1267,10 @@ void MainWindow::SetupDebugger()
 	m_frameDebugger = std::make_unique<QtFramedebugger>();
 
 	{
-		auto debugMenu = new QMenu(this);
+		m_debugMenu = new QMenu(this);
 		debugMenuUi = new Ui::DebugMenu();
-		debugMenuUi->setupUi(debugMenu);
-		ui->menuBar->insertMenu(ui->menuHelp->menuAction(), debugMenu);
+		debugMenuUi->setupUi(m_debugMenu);
+		ui->menuBar->insertMenu(ui->menuHelp->menuAction(), m_debugMenu);
 
 		connect(debugMenuUi->actionShowDebugger, &QAction::triggered, this, std::bind(&MainWindow::ShowDebugger, this));
 		connect(debugMenuUi->actionShowFrameDebugger, &QAction::triggered, this, std::bind(&MainWindow::ShowFrameDebugger, this));
@@ -1257,15 +1280,15 @@ void MainWindow::SetupDebugger()
 
 #if defined(__APPLE__)
 	{
-		auto debugDockMenu = new QMenu(this);
+		m_debugDockMenu = new QMenu(this);
 		debugDockMenuUi = new Ui::DebugDockMenu();
-		debugDockMenuUi->setupUi(debugDockMenu);
+		debugDockMenuUi->setupUi(m_debugDockMenu);
 
 		connect(debugDockMenuUi->actionShowMainWindow, &QAction::triggered, this, std::bind(&MainWindow::ShowMainWindow, this));
 		connect(debugDockMenuUi->actionShowDebugger, &QAction::triggered, this, std::bind(&MainWindow::ShowDebugger, this));
 		connect(debugDockMenuUi->actionShowFrameDebugger, &QAction::triggered, this, std::bind(&MainWindow::ShowFrameDebugger, this));
 
-		debugDockMenu->setAsDockMenu();
+		m_debugDockMenu->setAsDockMenu();
 	}
 #endif //defined(__APPLE__)
 

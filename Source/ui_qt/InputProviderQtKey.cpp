@@ -1,4 +1,5 @@
 #include <QKeySequence>
+#include <QCoreApplication>
 #include <cassert>
 #include "InputProviderQtKey.h"
 #include "string_format.h"
@@ -14,7 +15,9 @@ std::string CInputProviderQtKey::GetTargetDescription(const BINDINGTARGET& targe
 {
 	assert(target.providerId == PROVIDER_ID);
 	auto description = QKeySequence(target.keyId).toString();
-	return string_format("Keyboard: %s", description.toStdString().c_str());
+	return QCoreApplication::translate("CInputProviderQtKey", "Keyboard: %1")
+	    .arg(description)
+	    .toStdString();
 }
 
 BINDINGTARGET CInputProviderQtKey::MakeBindingTarget(int keyCode)

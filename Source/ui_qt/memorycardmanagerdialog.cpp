@@ -52,9 +52,9 @@ void MemoryCardManagerDialog::on_import_saves_button_clicked()
 		}
 		catch(const std::exception& Exception)
 		{
-			QString msg("Couldn't import save(s):\n\n%1");
+			QString msg = tr("Couldn't import save(s):\n\n%1");
 			QMessageBox messageBox;
-			messageBox.critical(this, "Error", msg.arg(Exception.what()));
+			messageBox.critical(this, tr("Error"), msg.arg(Exception.what()));
 			messageBox.show();
 			return;
 		}
@@ -67,8 +67,8 @@ void MemoryCardManagerDialog::on_import_saves_button_clicked()
 CSaveImporterBase::OVERWRITE_PROMPT_RETURN MemoryCardManagerDialog::OnImportOverwrite(const fs::path& filePath)
 {
 	std::string fileName = filePath.filename().string();
-	QString msg("File %1 already exists.\n\nOverwrite?");
-	auto resBtn = QMessageBox::question(this, "Overwrite?",
+	QString msg = tr("File %1 already exists.\n\nOverwrite?");
+	auto resBtn = QMessageBox::question(this, tr("Overwrite?"),
 	                                    msg.arg(fileName.c_str()),
 	                                    QMessageBox::Yes | QMessageBox::No | QMessageBox::YesToAll,
 	                                    QMessageBox::Yes);
@@ -153,8 +153,8 @@ void MemoryCardManagerDialog::on_savelistWidget_currentRowChanged(int currentRow
 
 void MemoryCardManagerDialog::on_delete_save_button_clicked()
 {
-	QMessageBox::StandardButton resBtn = QMessageBox::question(this, "Overwrite?",
-	                                                           "Are you sure you want to delete the currently selected entry",
+	QMessageBox::StandardButton resBtn = QMessageBox::question(this, tr("Delete?"),
+	                                                           tr("Are you sure you want to delete the currently selected entry"),
 	                                                           QMessageBox::Yes | QMessageBox::No,
 	                                                           QMessageBox::Yes);
 	if(resBtn == QMessageBox::Yes)
@@ -196,41 +196,37 @@ void MemoryCardManagerDialog::on_export_save_button_clicked()
 				}
 				catch(const std::exception& Exception)
 				{
-					QString msg("Couldn't export save(s):\n\n%1");
+					QString msg = tr("Couldn't export save(s):\n\n%1");
 					QMessageBox messageBox;
-					messageBox.critical(this, "Error", msg.arg(Exception.what()));
+					messageBox.critical(this, tr("Error"), msg.arg(Exception.what()));
 					messageBox.show();
 					return;
 				}
 
-				QString msg("Save exported successfully.");
 				QMessageBox messageBox;
-				messageBox.information(this, "Success", msg);
+				messageBox.information(this, tr("Success"), tr("Save exported successfully."));
 				messageBox.show();
 				return;
 			}
 			else
 			{
-				QString msg("Save export Cancelled.");
 				QMessageBox messageBox;
-				messageBox.warning(this, "Cancelled", msg);
+				messageBox.warning(this, tr("Cancelled"), tr("Save export Cancelled."));
 				messageBox.show();
 				return;
 			}
 		}
 		else
 		{
-			QString msg("Save not found,\nPlease try again.");
 			QMessageBox messageBox;
-			messageBox.critical(this, "Error", msg);
+			messageBox.critical(this, tr("Error"), tr("Save not found,\nPlease try again."));
 			messageBox.show();
 		}
 	}
 	else
 	{
-		QString msg("Invalid selection,\nPlease try again.");
 		QMessageBox messageBox;
-		messageBox.critical(this, "Error", msg);
+		messageBox.critical(this, tr("Error"), tr("Invalid selection,\nPlease try again."));
 		messageBox.show();
 	}
 }

@@ -118,6 +118,32 @@
      <widget class="QWidget" name="General">
       <layout class="QVBoxLayout" name="verticalLayout1">
        <item>
+        <widget class="QLabel" name="label_uiLanguage">
+         <property name="text">
+          <string>Interface Language:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="comboBox_uiLanguage">
+         <item>
+          <property name="text">
+           <string>System Default</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>English</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Chinese (Simplified)</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item>
         <widget class="QLabel" name="label_2">
          <property name="text">
           <string>System Language:</string>

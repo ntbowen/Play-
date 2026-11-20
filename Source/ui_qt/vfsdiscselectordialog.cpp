@@ -36,7 +36,7 @@ void VFSDiscSelectorDialog::on_iso_browse_button_clicked()
 {
 	QStringList filters;
 	filters.push_back(QtUtils::GetDiscImageFormatsFilter());
-	filters.push_back("All files (*)");
+	filters.push_back(tr("All files (*)"));
 
 	QFileDialog dialog(this);
 	dialog.setFileMode(QFileDialog::ExistingFile);
@@ -72,7 +72,7 @@ void VFSDiscSelectorDialog::Refresh_disc_drive()
 				}
 				else
 				{
-					name = "Unknown";
+					name = tr("Unknown");
 				}
 				QString item("%1 (%2)");
 				ui->comboBox->addItem(item.arg(device).arg(name));
@@ -120,7 +120,7 @@ void VFSDiscSelectorDialog::accept()
 		}
 	}
 	QMessageBox messageBox;
-	messageBox.critical(this, "Error", "Invalid selection, please try again.");
+	messageBox.critical(this, tr("Error"), tr("Invalid selection, please try again."));
 	messageBox.show();
 }
 

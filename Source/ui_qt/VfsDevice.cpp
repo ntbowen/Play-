@@ -5,6 +5,7 @@
 
 #include <QFileDialog>
 #include <QStorageInfo>
+#include <QCoreApplication>
 #include "QStringUtils.h"
 
 ///////////////////////////////////////////
@@ -23,9 +24,9 @@ const char* CDirectoryDevice::GetDeviceName()
 	return m_name;
 }
 
-const char* CDirectoryDevice::GetBindingType()
+QString CDirectoryDevice::GetBindingType()
 {
-	return "Directory";
+	return QCoreApplication::translate("VFSManagerDialog", "Directory");
 }
 
 QString CDirectoryDevice::GetBinding()
@@ -86,24 +87,24 @@ const char* CCdrom0Device::GetDeviceName()
 	return "cdrom0";
 }
 
-const char* CCdrom0Device::GetBindingType()
+QString CCdrom0Device::GetBindingType()
 {
 	if(m_bindingType == CCdrom0Device::BINDING_PHYSICAL)
 	{
-		return "Physical Device";
+		return QCoreApplication::translate("VFSManagerDialog", "Physical Device");
 	}
 	if(m_bindingType == CCdrom0Device::BINDING_IMAGE)
 	{
-		return "Disk Image";
+		return QCoreApplication::translate("VFSManagerDialog", "Disk Image");
 	}
-	return "";
+	return QString();
 }
 
 QString CCdrom0Device::GetBinding()
 {
 	if(m_imagePath.empty())
 	{
-		return "(None)";
+		return QCoreApplication::translate("VFSManagerDialog", "(None)");
 	}
 	else
 	{

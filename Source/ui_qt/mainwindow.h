@@ -21,6 +21,7 @@ namespace Ui
 }
 
 class OutputWindow;
+class QMenu;
 
 #ifdef DEBUGGER_INCLUDED
 class QtDebugger;
@@ -94,6 +95,7 @@ private:
 	void UpdateGSHandlerLabel();
 	void SetupBootableView();
 	void SetupDebugger();
+	void OnUiLanguageChanged();
 
 	Ui::MainWindow* ui = nullptr;
 
@@ -125,6 +127,8 @@ private:
 #ifdef DEBUGGER_INCLUDED
 	std::unique_ptr<QtDebugger> m_debugger;
 	std::unique_ptr<QtFramedebugger> m_frameDebugger;
+	QMenu* m_debugMenu = nullptr;
+	QMenu* m_debugDockMenu = nullptr;
 	Ui::DebugDockMenu* debugDockMenuUi = nullptr;
 	Ui::DebugMenu* debugMenuUi = nullptr;
 #endif
