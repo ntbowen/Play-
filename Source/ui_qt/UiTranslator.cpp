@@ -9,37 +9,37 @@
 
 namespace
 {
-QTranslator* s_qtTranslator = nullptr;
-QTranslator* s_appTranslator = nullptr;
+	QTranslator* s_qtTranslator = nullptr;
+	QTranslator* s_appTranslator = nullptr;
 
-QString GetTranslationName()
-{
-	switch(CAppConfig::GetInstance().GetPreferenceInteger(PREF_UI_LANGUAGE))
+	QString GetTranslationName()
 	{
-	case UI_LANGUAGE_ENGLISH:
-		//The source strings are English, no translation needed.
-		return QString();
-	case UI_LANGUAGE_CHINESE_SIMPLIFIED:
-		return QStringLiteral("play_zh_CN");
-	default:
-	{
-		const QString systemLocale = QLocale::system().name();
-		if(systemLocale.startsWith(QStringLiteral("zh_CN")) ||
-		   systemLocale.startsWith(QStringLiteral("zh_SG")))
+		switch(CAppConfig::GetInstance().GetPreferenceInteger(PREF_UI_LANGUAGE))
 		{
+		case UI_LANGUAGE_ENGLISH:
+			//The source strings are English, no translation needed.
+			return QString();
+		case UI_LANGUAGE_CHINESE_SIMPLIFIED:
 			return QStringLiteral("play_zh_CN");
+		default:
+		{
+			const QString systemLocale = QLocale::system().name();
+			if(systemLocale.startsWith(QStringLiteral("zh_CN")) ||
+			   systemLocale.startsWith(QStringLiteral("zh_SG")))
+			{
+				return QStringLiteral("play_zh_CN");
+			}
+			return QString();
 		}
-		return QString();
+		}
 	}
-	}
-}
 }
 
 void UiTranslator::ApplyLanguage(QCoreApplication& app)
 {
 	const QString translationName = GetTranslationName();
 	const QStringList searchPaths = {
-	    QCoreApplication::applicationDirPath() + "/translations",               //Windows/Linux
+	    QCoreApplication::applicationDirPath() + "/translations",              //Windows/Linux
 	    QCoreApplication::applicationDirPath() + "/../Resources/translations", //macOS app bundle
 	};
 

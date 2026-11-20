@@ -42,7 +42,7 @@ QVariant CInputBindingModel::data(const QModelIndex& index, int role) const
 			if(typeName == "simulatedaxisbinding") return QVariant(tr("Simulated Axis"));
 			return QVariant(typeName);
 		}
-			break;
+		break;
 		case 2:
 			return binding ? QVariant(binding->GetDescription(m_inputManager).c_str()) : QVariant();
 			break;
