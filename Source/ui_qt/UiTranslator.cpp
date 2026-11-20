@@ -76,6 +76,19 @@ void UiTranslator::ApplyLanguage(QCoreApplication& app)
 	};
 
 	//Qt's own translations for standard widgets (buttons, dialogs, ...).
-	replaceTranslator(translationName.isEmpty() ? QString() : QStringLiteral("qt_") + translationName, s_qtTranslator);
+	//Our catalogs are named play_<locale>, Qt's are named qt_<locale>/qtbase_<locale>.
+	if(!translationName.isEmpty())
+	{
+		const QString localeName = translationName.mid(translationName.indexOf(QLatin1Char('_')) + 1);
+		replaceTranslator(QStringLiteral("qt_") + localeName, s_qtTranslator);
+		if(s_qtTranslator == nullptr)
+		{
+			replaceTranslator(QStringLiteral("qtbase_") + localeName, s_qtTranslator);
+		}
+	}
+	else
+	{
+		replaceTranslator(QString(), s_qtTranslator);
+	}
 	replaceTranslator(translationName, s_appTranslator);
 }

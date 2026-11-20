@@ -156,6 +156,9 @@
    <property name="text">
     <string>Settings...</string>
    </property>
+   <property name="menuRole">
+    <enum>QAction::PreferencesRole</enum>
+   </property>
   </action>
   <action name="actionBoot_ELF">
    <property name="text">
@@ -183,6 +186,9 @@
   <action name="actionAbout">
    <property name="text">
     <string>About...</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::AboutRole</enum>
    </property>
   </action>
   <action name="actionPause_when_focus_is_lost">
