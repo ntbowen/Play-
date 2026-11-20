@@ -264,6 +264,369 @@ Profile name:</source>
     </message>
 </context>
 <context>
+    <name>CoreErrors</name>
+    <message>
+        <source>Block Descriptor Table not present.</source>
+        <translation>块描述符表不存在。</translation>
+    </message>
+    <message>
+        <source>CSO frame size must be a power of two.</source>
+        <translation>CSO 帧大小必须是 2 的幂。</translation>
+    </message>
+    <message>
+        <source>CSO frame size must be at least one sector.</source>
+        <translation>CSO 帧大小至少为一个扇区。</translation>
+    </message>
+    <message>
+        <source>Can't get sector size.</source>
+        <translation>无法获取扇区大小。</translation>
+    </message>
+    <message>
+        <source>Could not build media from cuesheet.</source>
+        <translation>无法从 cuesheet 构建媒体。</translation>
+    </message>
+    <message>
+        <source>Could not read full CSO header.</source>
+        <translation>无法读取完整的 CSO 头。</translation>
+    </message>
+    <message>
+        <source>Couldn't initialize WaveOut device.</source>
+        <translation>无法初始化 WaveOut 设备。</translation>
+    </message>
+    <message>
+        <source>Couldn't open executable specified by virtual path.</source>
+        <translation>无法打开虚拟路径指定的可执行文件。</translation>
+    </message>
+    <message>
+        <source>Couldn't open volume for reading.</source>
+        <translation>无法打开卷进行读取。</translation>
+    </message>
+    <message>
+        <source>Device not found.</source>
+        <translation>未找到设备。</translation>
+    </message>
+    <message>
+        <source>Directory not found.</source>
+        <translation>未找到目录。</translation>
+    </message>
+    <message>
+        <source>Error decompressing bz2 block.</source>
+        <translation>解压 bz2 块时出错。</translation>
+    </message>
+    <message>
+        <source>Error decompressing zlib block.</source>
+        <translation>解压 zlib 块时出错。</translation>
+    </message>
+    <message>
+        <source>Error occured while reading ELF executable from virtual path.</source>
+        <translation>从虚拟路径读取 ELF 可执行文件时出错。</translation>
+    </message>
+    <message>
+        <source>Error parsing 'SYSTEM.CNF' for a BOOT2 value.</source>
+        <translation>解析 'SYSTEM.CNF' 的 BOOT2 值时出错。</translation>
+    </message>
+    <message>
+        <source>Failed to create directory.</source>
+        <translation>创建目录失败。</translation>
+    </message>
+    <message>
+        <source>Failed to obtain file stream.</source>
+        <translation>获取文件流失败。</translation>
+    </message>
+    <message>
+        <source>Failed to open CHD file.</source>
+        <translation>打开 CHD 文件失败。</translation>
+    </message>
+    <message>
+        <source>Failed to open volume.</source>
+        <translation>打开卷失败。</translation>
+    </message>
+    <message>
+        <source>Failed to read directory entry.</source>
+        <translation>读取目录项失败。</translation>
+    </message>
+    <message>
+        <source>Feature is not implemented in current backend.</source>
+        <translation>当前后端未实现该功能。</translation>
+    </message>
+    <message>
+        <source>File name too short</source>
+        <translation>文件名太短</translation>
+    </message>
+    <message>
+        <source>File not found.</source>
+        <translation>文件未找到。</translation>
+    </message>
+    <message>
+        <source>Got an index without defining a track.</source>
+        <translation>获取到索引但未定义轨道。</translation>
+    </message>
+    <message>
+        <source>Illegal system call.</source>
+        <translation>非法系统调用。</translation>
+    </message>
+    <message>
+        <source>Inconsistent track block size.</source>
+        <translation>轨道块大小不一致。</translation>
+    </message>
+    <message>
+        <source>Inconsistent track order.</source>
+        <translation>轨道顺序不一致。</translation>
+    </message>
+    <message>
+        <source>Invalid 'icon.sys' file.</source>
+        <translation>'icon.sys' 文件无效。</translation>
+    </message>
+    <message>
+        <source>Invalid ISO9660 Volume Descriptor.</source>
+        <translation>无效的 ISO9660 卷描述符。</translation>
+    </message>
+    <message>
+        <source>Invalid MAX save file.</source>
+        <translation>无效的 MAX 存档文件。</translation>
+    </message>
+    <message>
+        <source>Invalid MDS file version.</source>
+        <translation>无效的 MDS 文件版本。</translation>
+    </message>
+    <message>
+        <source>Invalid MDS file.</source>
+        <translation>无效的 MDS 文件。</translation>
+    </message>
+    <message>
+        <source>Invalid PSX executable.</source>
+        <translation>无效的 PSX 可执行文件。</translation>
+    </message>
+    <message>
+        <source>Invalid S3 object path.</source>
+        <translation>无效的 S3 对象路径。</translation>
+    </message>
+    <message>
+        <source>Invalid X-Port save file.</source>
+        <translation>无效的 X-Port 存档文件。</translation>
+    </message>
+    <message>
+        <source>Invalid data block.</source>
+        <translation>无效的数据块。</translation>
+    </message>
+    <message>
+        <source>Invalid entry type encountered.</source>
+        <translation>遇到无效的条目类型。</translation>
+    </message>
+    <message>
+        <source>Invalid file handle.</source>
+        <translation>无效的文件句柄。</translation>
+    </message>
+    <message>
+        <source>Invalid icon file (Animation Header Broken).</source>
+        <translation>无效的图标文件（动画头损坏）。</translation>
+    </message>
+    <message>
+        <source>Invalid icon file</source>
+        <translation>无效的图标文件</translation>
+    </message>
+    <message>
+        <source>Invalid label.</source>
+        <translation>无效的标签。</translation>
+    </message>
+    <message>
+        <source>Invalid partition name.</source>
+        <translation>无效的分区名。</translation>
+    </message>
+    <message>
+        <source>Invalid path.</source>
+        <translation>无效的路径。</translation>
+    </message>
+    <message>
+        <source>Invalid target CPU. Must be MIPS.</source>
+        <translation>无效的目标 CPU，必须为 MIPS。</translation>
+    </message>
+    <message>
+        <source>Invalid unit number.</source>
+        <translation>无效的单元编号。</translation>
+    </message>
+    <message>
+        <source>Invalid zero block.</source>
+        <translation>无效的零块。</translation>
+    </message>
+    <message>
+        <source>Jump length too long.</source>
+        <translation>跳转长度过长。</translation>
+    </message>
+    <message>
+        <source>Multiple loadable program headers found.</source>
+        <translation>发现多个可加载的程序头。</translation>
+    </message>
+    <message>
+        <source>Multiple tracks per file not supported.</source>
+        <translation>不支持每个文件包含多个轨道。</translation>
+    </message>
+    <message>
+        <source>No 'SYSTEM.CNF' file found on the cdrom0 device.</source>
+        <translation>在 cdrom0 设备上未找到 'SYSTEM.CNF' 文件。</translation>
+    </message>
+    <message>
+        <source>No program to load.</source>
+        <translation>没有可加载的程序。</translation>
+    </message>
+    <message>
+        <source>Not a SYSCALL.</source>
+        <translation>不是 SYSCALL。</translation>
+    </message>
+    <message>
+        <source>Not a directory.</source>
+        <translation>不是目录。</translation>
+    </message>
+    <message>
+        <source>Not a valid CSO file.</source>
+        <translation>不是有效的 CSO 文件。</translation>
+    </message>
+    <message>
+        <source>Not an executable ELF file.</source>
+        <translation>不是可执行的 ELF 文件。</translation>
+    </message>
+    <message>
+        <source>Not implemented.</source>
+        <translation>未实现。</translation>
+    </message>
+    <message>
+        <source>Not supported.</source>
+        <translation>不支持。</translation>
+    </message>
+    <message>
+        <source>Null base stream supplied.</source>
+        <translation>提供了空的基础流。</translation>
+    </message>
+    <message>
+        <source>Only CSOv1 supported right now.</source>
+        <translation>目前仅支持 CSOv1。</translation>
+    </message>
+    <message>
+        <source>Operation not supported.</source>
+        <translation>不支持的操作。</translation>
+    </message>
+    <message>
+        <source>Operation not-supported.</source>
+        <translation>不支持的操作。</translation>
+    </message>
+    <message>
+        <source>Partition doesn't exist.</source>
+        <translation>分区不存在。</translation>
+    </message>
+    <message>
+        <source>Renaming files across devices not supported.</source>
+        <translation>不支持跨设备重命名文件。</translation>
+    </message>
+    <message>
+        <source>S3 support was disabled during build configuration.</source>
+        <translation>构建配置中禁用了 S3 支持。</translation>
+    </message>
+    <message>
+        <source>Screenshot feature is not implemented in current backend.</source>
+        <translation>当前后端未实现截图功能。</translation>
+    </message>
+    <message>
+        <source>Thread isn't running.</source>
+        <translation>线程未运行。</translation>
+    </message>
+    <message>
+        <source>Trying to read past eof.</source>
+        <translation>尝试读取超出文件末尾。</translation>
+    </message>
+    <message>
+        <source>Unable to decompress CSO frame using zlib.</source>
+        <translation>无法使用 zlib 解压 CSO 帧。</translation>
+    </message>
+    <message>
+        <source>Unable to initialize zlib for CSO decompression.</source>
+        <translation>无法为 CSO 解压初始化 zlib。</translation>
+    </message>
+    <message>
+        <source>Unable to read CSO index.</source>
+        <translation>无法读取 CSO 索引。</translation>
+    </message>
+    <message>
+        <source>Unable to read uncompressed bytes from CSO.</source>
+        <translation>无法从 CSO 读取未压缩字节。</translation>
+    </message>
+    <message>
+        <source>Unable to write to CSO, read only.</source>
+        <translation>无法写入 CSO，只读。</translation>
+    </message>
+    <message>
+        <source>Unexpected track command encountered.</source>
+        <translation>遇到意外的轨道命令。</translation>
+    </message>
+    <message>
+        <source>Unknown device.</source>
+        <translation>未知设备。</translation>
+    </message>
+    <message>
+        <source>Unknown input file format.</source>
+        <translation>未知的输入文件格式。</translation>
+    </message>
+    <message>
+        <source>Unknown texture format.</source>
+        <translation>未知的纹理格式。</translation>
+    </message>
+    <message>
+        <source>Unsupported FILE type: %s.</source>
+        <translation>不支持的 FILE 类型：%s。</translation>
+    </message>
+    <message>
+        <source>Unsupported block descriptor size.</source>
+        <translation>不支持的块描述符大小。</translation>
+    </message>
+    <message>
+        <source>Unsupported block storage mode.</source>
+        <translation>不支持的块存储模式。</translation>
+    </message>
+    <message>
+        <source>Unsupported channel.</source>
+        <translation>不支持的通道。</translation>
+    </message>
+    <message>
+        <source>Unsupported operand type.</source>
+        <translation>不支持的操作数类型。</translation>
+    </message>
+    <message>
+        <source>Unsupported operation.</source>
+        <translation>不支持的操作。</translation>
+    </message>
+    <message>
+        <source>Arcade driver unspecified.</source>
+        <translation>未指定街机驱动。</translation>
+    </message>
+    <message>
+        <source>Failed to find '%s' in game's directory.</source>
+        <translation>未能在游戏目录中找到 '%s'。</translation>
+    </message>
+    <message>
+        <source>Failed to get game.</source>
+        <translation>获取游戏失败。</translation>
+    </message>
+    <message>
+        <source>Failed to get games list.</source>
+        <translation>获取游戏列表失败。</translation>
+    </message>
+    <message>
+        <source>Failed to parse button number '%s'.</source>
+        <translation>解析按键编号 '%s' 失败。</translation>
+    </message>
+    <message>
+        <source>Failed to read arcade definition file located at '%s'.</source>
+        <translation>读取位于 '%s' 的街机定义文件失败。</translation>
+    </message>
+    <message>
+        <source>Sector size mismatch in HDD image file ('%s'). Make sure the CHD file was created with the 'createhd' option.</source>
+        <translation>HDD 镜像文件（'%s'）的扇区大小不匹配。请确保 CHD 文件是使用 'createhd' 选项创建的。</translation>
+    </message>
+    <message>
+        <source>Unknown enum name '%s'.</source>
+        <translation>未知的枚举名称 '%s'。</translation>
+    </message>
+</context>
+<context>
     <name>DebugDockMenu</name>
     <message>
         <location filename="debugdockmenu.ui"/>

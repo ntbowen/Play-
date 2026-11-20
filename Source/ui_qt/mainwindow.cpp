@@ -275,7 +275,7 @@ void MainWindow::SetupSoundHandler()
 		}
 		catch(const std::exception& ex)
 		{
-			m_msgLabel->setText(tr("Failed to create sound handler: %0").arg(QString::fromUtf8(ex.what())));
+			m_msgLabel->setText(tr("Failed to create sound handler: %0").arg(QtUtils::TranslateCoreError(ex.what())));
 		}
 	}
 	else
@@ -329,7 +329,7 @@ void MainWindow::on_actionBoot_DiscImage_triggered()
 			catch(const std::exception& e)
 			{
 				QMessageBox messageBox;
-				messageBox.critical(nullptr, tr("Error"), e.what());
+				messageBox.critical(nullptr, tr("Error"), QtUtils::TranslateCoreError(e.what()));
 				messageBox.show();
 			}
 		}
@@ -353,7 +353,7 @@ void MainWindow::on_actionBoot_DiscImage_S3_triggered()
 			catch(const std::exception& e)
 			{
 				QMessageBox messageBox;
-				messageBox.critical(nullptr, tr("Error"), e.what());
+				messageBox.critical(nullptr, tr("Error"), QtUtils::TranslateCoreError(e.what()));
 				messageBox.show();
 			}
 		}
@@ -370,7 +370,7 @@ void MainWindow::on_actionBoot_cdrom0_triggered()
 	catch(const std::exception& e)
 	{
 		QMessageBox messageBox;
-		messageBox.critical(nullptr, tr("Error"), e.what());
+		messageBox.critical(nullptr, tr("Error"), QtUtils::TranslateCoreError(e.what()));
 		messageBox.show();
 	}
 }
@@ -394,7 +394,7 @@ void MainWindow::on_actionBoot_ELF_triggered()
 			catch(const std::exception& e)
 			{
 				QMessageBox messageBox;
-				messageBox.critical(nullptr, tr("Error"), e.what());
+				messageBox.critical(nullptr, tr("Error"), QtUtils::TranslateCoreError(e.what()));
 				messageBox.show();
 			}
 		}
@@ -456,7 +456,7 @@ void MainWindow::BootArcadeMachine(fs::path arcadeDefPath)
 	catch(const std::exception& e)
 	{
 		QMessageBox messageBox;
-		messageBox.critical(nullptr, tr("Error"), e.what());
+		messageBox.critical(nullptr, tr("Error"), QtUtils::TranslateCoreError(e.what()));
 		messageBox.show();
 	}
 }
@@ -1158,7 +1158,7 @@ void MainWindow::on_actionReset_triggered()
 	catch(const std::exception& e)
 	{
 		QMessageBox messageBox;
-		messageBox.critical(nullptr, tr("Error"), e.what());
+		messageBox.critical(nullptr, tr("Error"), QtUtils::TranslateCoreError(e.what()));
 		messageBox.show();
 	}
 }
@@ -1251,7 +1251,7 @@ void MainWindow::SetupBootableView()
 		catch(const std::exception& e)
 		{
 			QMessageBox messageBox;
-			messageBox.critical(nullptr, tr("Error"), e.what());
+			messageBox.critical(nullptr, tr("Error"), QtUtils::TranslateCoreError(e.what()));
 			messageBox.show();
 		}
 	};
