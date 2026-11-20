@@ -284,9 +284,34 @@ find_program(QT_LRELEASE_EXECUTABLE NAMES lrelease
 		${Qt5_DIR}/../../bin
 		${Qt5_DIR}/../../libexec
 		${Qt5_DIR}/../bin
+		/usr/lib/qt6/bin
+		/usr/lib/qt6/libexec
+		/usr/lib/qt5/bin
+		/usr/lib/qt5/libexec
+		/usr/lib64/qt6/bin
+		/usr/lib64/qt6/libexec
+		/usr/lib64/qt5/bin
+		/usr/lib64/qt5/libexec
 		$ENV{QTDIR}/bin
 		$ENV{QTDIR}/libexec
 )
+
+#Make sure the found lrelease actually runs: distro qtchooser wrappers exist on
+#PATH but fail when no default Qt version is configured.
+if(QT_LRELEASE_EXECUTABLE)
+	execute_process(
+		COMMAND ${QT_LRELEASE_EXECUTABLE} -version
+		RESULT_VARIABLE QT_LRELEASE_RESULT
+		OUTPUT_QUIET
+		ERROR_QUIET
+	)
+	if(NOT QT_LRELEASE_RESULT EQUAL 0)
+		message(STATUS "Found lrelease (${QT_LRELEASE_EXECUTABLE}) is not usable.")
+		unset(QT_LRELEASE_EXECUTABLE CACHE)
+		unset(QT_LRELEASE_EXECUTABLE)
+	endif()
+endif()
+
 set(UI_QM_FILES)
 if(QT_LRELEASE_EXECUTABLE)
 	set(UI_TS_FILES
