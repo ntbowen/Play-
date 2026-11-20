@@ -18,3 +18,8 @@ QString QtUtils::GetDiscImageFormatsFilter()
 	}
 	return QCoreApplication::translate("QtUtils", "Disc images(%1)").arg(QString::fromStdString(fileFilter));
 }
+
+QString QtUtils::TranslateCoreError(const char* what)
+{
+	return QCoreApplication::translate("CoreErrors", what);
+}
