@@ -32,6 +32,7 @@ private slots:
 	void changePage(QListWidgetItem* current, QListWidgetItem* previous);
 
 	//General Page
+	void on_comboBox_uiLanguage_currentIndexChanged(int index);
 	void on_comboBox_system_language_currentIndexChanged(int index);
 	void on_checkBox_limitFrameRate_clicked(bool checked);
 	void on_checkBox_showEECPUUsage_clicked(bool checked);

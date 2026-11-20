@@ -1,3 +1,4 @@
+#include <QCoreApplication>
 #include <cassert>
 #include "InputProviderQtMouse.h"
 #include "string_format.h"
@@ -12,18 +13,20 @@ uint32 CInputProviderQtMouse::GetId() const
 std::string CInputProviderQtMouse::GetTargetDescription(const BINDINGTARGET& target) const
 {
 	assert(target.providerId == PROVIDER_ID);
-	auto description = [&]() -> std::string {
+	auto description = [&]() -> QString {
 		switch(target.keyId)
 		{
 		case Qt::LeftButton:
-			return "Left Button";
+			return QCoreApplication::translate("CInputProviderQtMouse", "Left Button");
 		case Qt::RightButton:
-			return "Right Button";
+			return QCoreApplication::translate("CInputProviderQtMouse", "Right Button");
 		default:
-			return string_format("Unknown button %d", target.keyId);
+			return QCoreApplication::translate("CInputProviderQtMouse", "Unknown button %1").arg(target.keyId);
 		}
 	}();
-	return string_format("Mouse: %s", description.c_str());
+	return QCoreApplication::translate("CInputProviderQtMouse", "Mouse: %1")
+	    .arg(description)
+	    .toStdString();
 }
 
 BINDINGTARGET CInputProviderQtMouse::MakeBindingTarget(Qt::MouseButton mouseButton)

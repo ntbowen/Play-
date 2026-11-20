@@ -10,7 +10,7 @@ BootableModelProxy::BootableModelProxy(QObject* parent)
 
 void BootableModelProxy::setFilterState(const QString& state)
 {
-	if(state == "All")
+	if(state == tr("All"))
 	{
 		m_state.clear();
 	}

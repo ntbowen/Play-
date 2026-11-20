@@ -100,7 +100,8 @@ void QBootablesView::AddMsgLabel(ElidedLabel* msgLabel)
 
 void QBootablesView::SetupActions(BootCallback bootCallback)
 {
-	auto bootAction = new QAction("Boot", this);
+	auto bootAction = new QAction(tr("Boot"), this);
+	m_bootAction = bootAction;
 	auto listViewBoundCallback = [this, listView = ui->listView]() {
 		auto index = listView->selectionModel()->selectedIndexes().at(0);
 		BootBootables(index);
@@ -109,7 +110,8 @@ void QBootablesView::SetupActions(BootCallback bootCallback)
 	ui->listView->addAction(bootAction);
 	m_bootCallback = bootCallback;
 
-	auto removeAction = new QAction("Remove", this);
+	auto removeAction = new QAction(tr("Remove"), this);
+	m_removeAction = removeAction;
 	auto removeGameCallback = [listView = ui->listView, proxyModel = m_proxyModel](bool) {
 		auto index = listView->selectionModel()->selectedIndexes().at(0);
 		auto src_index = proxyModel->mapToSource(index);
@@ -121,6 +123,19 @@ void QBootablesView::SetupActions(BootCallback bootCallback)
 	};
 	connect(removeAction, &QAction::triggered, removeGameCallback);
 	ui->listView->addAction(removeAction);
+}
+
+void QBootablesView::Retranslate()
+{
+	ui->retranslateUi(this);
+	if(m_bootAction)
+	{
+		m_bootAction->setText(tr("Boot"));
+	}
+	if(m_removeAction)
+	{
+		m_removeAction->setText(tr("Remove"));
+	}
 }
 
 void QBootablesView::AsyncPopulateCache()
@@ -162,8 +177,8 @@ void QBootablesView::on_add_games_button_clicked()
 {
 	QStringList filters;
 	filters.push_back(QtUtils::GetDiscImageFormatsFilter());
-	filters.push_back("ELF files (*.elf)");
-	filters.push_back("All files (*)");
+	filters.push_back(tr("ELF files (*.elf)"));
+	filters.push_back(tr("All files (*)"));
 
 	QFileDialog dialog(this);
 	dialog.setFileMode(QFileDialog::ExistingFile);
@@ -173,8 +188,8 @@ void QBootablesView::on_add_games_button_clicked()
 		ToggleInterface(false);
 		auto filePath = QStringToPath(dialog.selectedFiles().first()).parent_path();
 		auto scanBootablesFuture = std::async(std::launch::async, [&, filePath]() {
-			QString msg = QString("Scanning '%1'.").arg(PathToQString(filePath));
-			AsyncUpdateStatus(msg.toStdString().c_str());
+			QString msg = tr("Scanning '%1'.").arg(PathToQString(filePath));
+			AsyncUpdateStatus(msg.toStdString());
 			try
 			{
 				ScanBootables(filePath, false);
@@ -182,19 +197,19 @@ void QBootablesView::on_add_games_button_clicked()
 			catch(...)
 			{
 			}
-			AsyncUpdateStatus("Retrieving Game Titles.");
+			AsyncUpdateStatus(tr("Retrieving Game Titles.").toStdString());
 			FetchGameTitles();
-			AsyncUpdateStatus("Downloading Game Covers.");
+			AsyncUpdateStatus(tr("Downloading Game Covers.").toStdString());
 			FetchGameCovers();
 
 			return true;
 		});
 
 		auto enableAddButtonCallback = [&](bool) {
-			AsyncUpdateStatus("Refreshing Model.");
+			AsyncUpdateStatus(tr("Refreshing Model.").toStdString());
 			AsyncResetModel(true);
 			ToggleInterface(true);
-			AsyncUpdateStatus("Complete.");
+			AsyncUpdateStatus(tr("Complete.").toStdString());
 		};
 		m_continuationChecker->GetContinuationManager().Register(std::move(scanBootablesFuture), enableAddButtonCallback);
 	}
@@ -220,8 +235,8 @@ void QBootablesView::on_refresh_button_clicked()
 		auto bootables_paths = GetActiveBootableDirectories();
 		for(auto path : bootables_paths)
 		{
-			QString msg = QString("Scanning '%1'.").arg(PathToQString(path));
-			AsyncUpdateStatus(msg.toStdString().c_str());
+			QString msg = tr("Scanning '%1'.").arg(PathToQString(path));
+			AsyncUpdateStatus(msg.toStdString());
 			try
 			{
 				ScanBootables(path, false);
@@ -230,19 +245,19 @@ void QBootablesView::on_refresh_button_clicked()
 			{
 			}
 		}
-		AsyncUpdateStatus("Retrieving Game Titles.");
+		AsyncUpdateStatus(tr("Retrieving Game Titles.").toStdString());
 		FetchGameTitles();
-		AsyncUpdateStatus("Downloading Game Covers.");
+		AsyncUpdateStatus(tr("Downloading Game Covers.").toStdString());
 		FetchGameCovers();
 
 		return true;
 	});
 
 	auto enableRefreshButtonCallback = [&](bool) {
-		AsyncUpdateStatus("Refreshing Model.");
+		AsyncUpdateStatus(tr("Refreshing Model.").toStdString());
 		AsyncResetModel(true);
 		ToggleInterface(true);
-		AsyncUpdateStatus("Complete.");
+		AsyncUpdateStatus(tr("Complete.").toStdString());
 	};
 	m_continuationChecker->GetContinuationManager().Register(std::move(refreshFuture), enableRefreshButtonCallback);
 }
@@ -274,7 +289,7 @@ void QBootablesView::on_awsS3Button_clicked()
 	ToggleInterface(false);
 	auto getListFuture = std::async(std::launch::async, [this, bucketName]() {
 		auto credentials = CS3ObjectStream::CConfig::GetInstance().GetCredentials();
-		AsyncUpdateStatus("Requesting S3 Bucket Content.");
+		AsyncUpdateStatus(tr("Requesting S3 Bucket Content.").toStdString());
 		auto result = AmazonS3Utils::GetListObjects(credentials, bucketName);
 		auto size = result.objects.size();
 		int i = 1;
@@ -284,7 +299,7 @@ void QBootablesView::on_awsS3Button_clicked()
 			auto path = string_format("//s3/%s/%s", bucketName.c_str(), item.key.c_str());
 			try
 			{
-				std::string msg = string_format("Processing: %s (%d/%d)", path.c_str(), i, size);
+				std::string msg = tr("Processing: %1 (%2/%3)").arg(QString::fromStdString(path)).arg(i).arg(size).toStdString();
 				AsyncUpdateStatus(msg);
 				new_entry |= TryRegisterBootable(path);
 			}
@@ -300,11 +315,11 @@ void QBootablesView::on_awsS3Button_clicked()
 	auto updateBootableCallback = [this](bool new_entry) {
 		if(new_entry)
 		{
-			AsyncUpdateStatus("Refreshing Model.");
+			AsyncUpdateStatus(tr("Refreshing Model.").toStdString());
 			AsyncResetModel(true);
 		}
 		ToggleInterface(true);
-		AsyncUpdateStatus("Complete.");
+		AsyncUpdateStatus(tr("Complete.").toStdString());
 	};
 	m_continuationChecker->GetContinuationManager().Register(std::move(getListFuture), updateBootableCallback);
 #endif
@@ -333,8 +348,8 @@ void QBootablesView::UpdateStatus(std::string msg)
 
 void QBootablesView::DisplayWarningMessage()
 {
-	QMessageBox::warning(this, "Warning Message",
-	                     "Can't close dialog while background operation in progress.",
+	QMessageBox::warning(this, tr("Warning Message"),
+	                     tr("Can't close dialog while background operation in progress."),
 	                     QMessageBox::Ok, QMessageBox::Ok);
 }
 

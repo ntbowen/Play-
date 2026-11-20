@@ -59,10 +59,10 @@ private:
 
 	CInputBindingManager::ProviderConnectionMap m_providersOverrideConnection;
 
-	QString m_bindingText = QString("Select new binding for\n%1");
-	QString m_nextbindingText = QString("Select axis negative binding for\n%1");
-	QString m_countingText = QString("Press & Hold Button for %1 Seconds to assign key");
-	QString m_selectedkeyText = QString("Selected Key: %1");
+	QString m_bindingText = tr("Select new binding for\n%1");
+	QString m_nextbindingText = tr("Select axis negative binding for\n%1");
+	QString m_countingText = tr("Press & Hold Button for %1 Seconds to assign key");
+	QString m_selectedkeyText = tr("Selected Key: %1");
 
 private slots:
 	void handleStartCountdown(QString);

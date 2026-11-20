@@ -1,6 +1,7 @@
 #include "QtUtils.h"
 #include "DiskUtils.h"
 #include <QStringList>
+#include <QCoreApplication>
 
 QString QtUtils::GetDiscImageFormatsFilter()
 {
@@ -15,5 +16,5 @@ QString QtUtils::GetDiscImageFormatsFilter()
 		}
 		fileFilter += "*" + *extensionIterator;
 	}
-	return QString::asprintf("Disc images(%s)", fileFilter.c_str());
+	return QCoreApplication::translate("QtUtils", "Disc images(%1)").arg(QString::fromStdString(fileFilter));
 }

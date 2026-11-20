@@ -9,7 +9,7 @@ class CDevice
 public:
 	virtual ~CDevice() = default;
 	virtual const char* GetDeviceName() = 0;
-	virtual const char* GetBindingType() = 0;
+	virtual QString GetBindingType() = 0;
 	virtual QString GetBinding() = 0;
 	virtual bool RequestModification(QWidget*) = 0;
 	virtual void Save() = 0;
@@ -23,7 +23,7 @@ public:
 	virtual ~CDirectoryDevice() = default;
 
 	const char* GetDeviceName() override;
-	const char* GetBindingType() override;
+	QString GetBindingType() override;
 	QString GetBinding() override;
 	bool RequestModification(QWidget*) override;
 	void Save() override;
@@ -47,7 +47,7 @@ public:
 	virtual ~CCdrom0Device() = default;
 
 	const char* GetDeviceName() override;
-	const char* GetBindingType() override;
+	QString GetBindingType() override;
 	QString GetBinding() override;
 	bool RequestModification(QWidget*) override;
 	void Save() override;

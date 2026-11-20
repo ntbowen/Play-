@@ -4,6 +4,9 @@
 #include "mainwindow.h"
 #include "PathUtils.h"
 #include "QStringUtils.h"
+#include "AppConfig.h"
+#include "PreferenceDefs.h"
+#include "UiTranslator.h"
 
 Q_DECLARE_METATYPE(std::string)
 
@@ -13,6 +16,9 @@ int main(int argc, char* argv[])
 	QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
 	QApplication a(argc, argv);
+
+	CAppConfig::GetInstance().RegisterPreferenceInteger(PREF_UI_LANGUAGE, UI_LANGUAGE_SYSTEM);
+	UiTranslator::ApplyLanguage(a);
 
 	QCoreApplication::setApplicationName("Play!");
 	QCoreApplication::setApplicationVersion("Version: " PLAY_VERSION);

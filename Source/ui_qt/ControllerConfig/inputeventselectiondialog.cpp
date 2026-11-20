@@ -209,7 +209,7 @@ void InputEventSelectionDialog::handleCancelCountdown()
 {
 	m_countdownTimer->stop();
 	ui->countdownlabel->setText(m_countingText.arg(COUNTDOWN_SECS));
-	ui->selectedbuttonlabel->setText(m_selectedkeyText.arg(QString("None")));
+	ui->selectedbuttonlabel->setText(m_selectedkeyText.arg(tr("None")));
 }
 
 void InputEventSelectionDialog::updateCountdown()
@@ -244,7 +244,7 @@ void InputEventSelectionDialog::confirmBinding()
 			m_state = STATE::SIMULATEDAXIS_WAITING;
 			ui->countdownlabel->setText(m_countingText.arg(COUNTDOWN_SECS));
 			ui->bindinglabel->setText(m_nextbindingText.arg(m_buttonName));
-			ui->selectedbuttonlabel->setText(m_selectedkeyText.arg(QString("None")));
+			ui->selectedbuttonlabel->setText(m_selectedkeyText.arg(tr("None")));
 		}
 		else if(m_state == STATE::SIMULATEDAXIS_SELECTED)
 		{

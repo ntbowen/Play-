@@ -140,6 +140,8 @@ set(QT_SOURCES
 	QStringUtils.h
 	QtUtils.cpp
 	QtUtils.h
+	UiTranslator.cpp
+	UiTranslator.h
 	vfsmanagerdialog.cpp
 	vfsmanagerdialog.h
 	vfsmodel.cpp
@@ -272,6 +274,41 @@ QT_ADD_RESOURCES(QT_RES_SOURCES ${QT_RESOURCES})
 QT_WRAP_UI(QT_UI_HEADERS ${QT_UIS})
 QT_WRAP_CPP(QT_MOC_SRCS ${QT_MOC_HEADERS})
 
+#Translations (.ts -> .qm). The resulting .qm files are deployed next to the
+#executable (or inside the macOS app bundle) and loaded at runtime.
+find_program(QT_LRELEASE_EXECUTABLE NAMES lrelease
+	HINTS
+		${Qt6_DIR}/../../bin
+		${Qt6_DIR}/../../libexec
+		${Qt6_DIR}/../bin
+		${Qt5_DIR}/../../bin
+		${Qt5_DIR}/../../libexec
+		${Qt5_DIR}/../bin
+		$ENV{QTDIR}/bin
+		$ENV{QTDIR}/libexec
+)
+set(UI_QM_FILES)
+if(QT_LRELEASE_EXECUTABLE)
+	set(UI_TS_FILES
+		${CMAKE_CURRENT_SOURCE_DIR}/translations/play_zh_CN.ts
+	)
+	foreach(ts_file ${UI_TS_FILES})
+		get_filename_component(qm_name ${ts_file} NAME_WE)
+		set(qm_file ${CMAKE_CURRENT_BINARY_DIR}/translations/${qm_name}.qm)
+		list(APPEND UI_QM_FILES ${qm_file})
+		add_custom_command(
+			OUTPUT ${qm_file}
+			COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/translations
+			COMMAND ${QT_LRELEASE_EXECUTABLE} ${ts_file} -qm ${qm_file}
+			DEPENDS ${ts_file}
+			COMMENT "Generating ${qm_name}.qm"
+			VERBATIM
+		)
+	endforeach()
+else()
+	message(STATUS "lrelease not found, UI translations will not be built.")
+endif()
+
 if(TARGET_PLATFORM_MACOS)
 	set(QT_SOURCES
 		${QT_SOURCES}
@@ -293,7 +330,16 @@ if(TARGET_PLATFORM_MACOS)
 		list(APPEND OSX_RES ${VULKAN_LIB_DIR}/libMoltenVK.dylib)
 		list(APPEND UI_QT_PROJECT_LIBS "-framework QuartzCore")
 	endif()
-	add_executable(Play MACOSX_BUNDLE ${QT_SOURCES} ${QT_MOC_SRCS} ${QT_RES_SOURCES} ${QT_UI_HEADERS} ${OSX_RES} ${ARCADE_DEFS})
+	add_executable(Play MACOSX_BUNDLE ${QT_SOURCES} ${QT_MOC_SRCS} ${QT_RES_SOURCES} ${QT_UI_HEADERS} ${OSX_RES} ${ARCADE_DEFS} ${UI_QM_FILES})
+	foreach(qm_file ${UI_QM_FILES})
+		set_source_files_properties(${qm_file} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources/translations")
+	endforeach()
+	if(UI_QM_FILES)
+		add_custom_command(TARGET Play POST_BUILD
+			COMMAND ${CMAKE_COMMAND} -E make_directory "$<TARGET_FILE_DIR:Play>/../Resources/translations"
+			COMMAND ${CMAKE_COMMAND} -E copy ${UI_QM_FILES} "$<TARGET_FILE_DIR:Play>/../Resources/translations"
+		)
+	endif()
 	# Set a custom plist file for the app bundle
 	# NOTE: for these values to be used Info.plist has to be edited
 	# NOTE: from cmake 3.7.0 you can use %b for month name abbreviations
@@ -322,9 +368,21 @@ elseif(TARGET_PLATFORM_WIN32)
 		win32/InputProviderXInput.cpp
 		win32/InputProviderXInput.h
 	)
-	add_executable(Play WIN32 ${QT_SOURCES} ${QT_MOC_SRCS} ${QT_RES_SOURCES} ${QT_UI_HEADERS})
+	add_executable(Play WIN32 ${QT_SOURCES} ${QT_MOC_SRCS} ${QT_RES_SOURCES} ${QT_UI_HEADERS} ${UI_QM_FILES})
+	if(UI_QM_FILES)
+		add_custom_command(TARGET Play POST_BUILD
+			COMMAND ${CMAKE_COMMAND} -E make_directory "$<TARGET_FILE_DIR:Play>/translations"
+			COMMAND ${CMAKE_COMMAND} -E copy ${UI_QM_FILES} "$<TARGET_FILE_DIR:Play>/translations"
+		)
+	endif()
 elseif(TARGET_PLATFORM_UNIX)
-	add_executable(Play ${QT_SOURCES} ${QT_MOC_SRCS} ${QT_RES_SOURCES} ${QT_UI_HEADERS})
+	add_executable(Play ${QT_SOURCES} ${QT_MOC_SRCS} ${QT_RES_SOURCES} ${QT_UI_HEADERS} ${UI_QM_FILES})
+
+	if(UI_QM_FILES)
+		install(FILES ${UI_QM_FILES}
+			DESTINATION ${CMAKE_INSTALL_BINDIR}/translations
+		)
+	endif()
 
 	install(TARGETS Play DESTINATION ${CMAKE_INSTALL_BINDIR}
 		PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ GROUP_EXECUTE GROUP_READ WORLD_EXECUTE WORLD_READ
@@ -356,7 +414,7 @@ elseif(TARGET_PLATFORM_UNIX)
 		message(WARNING "didn't find states.db")
 	endif()
 else()
-	add_executable(Play ${QT_SOURCES} ${QT_MOC_SRCS} ${QT_RES_SOURCES} ${QT_UI_HEADERS})
+	add_executable(Play ${QT_SOURCES} ${QT_MOC_SRCS} ${QT_RES_SOURCES} ${QT_UI_HEADERS} ${UI_QM_FILES})
 endif()
 
 target_link_libraries(Play ${UI_QT_PROJECT_LIBS})

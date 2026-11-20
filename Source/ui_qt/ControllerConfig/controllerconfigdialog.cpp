@@ -14,6 +14,7 @@
 #include "PreferenceDefs.h"
 #include "PathUtils.h"
 #include "inputbindingmodel.h"
+#include "ControllerButtonNames.h"
 #include "ControllerInfo.h"
 #include "inputeventselectiondialog.h"
 #include "QStringUtils.h"
@@ -60,7 +61,7 @@ ControllerConfigDialog::ControllerConfigDialog(CInputBindingManager* inputBindin
 		QObject::connect(uiElements.bindingsView, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(bindingsViewDoubleClicked(const QModelIndex&)));
 
 		auto motorBinding = inputBindingManager->GetMotorBinding(padIndex);
-		uiElements.hapticFeedbackComboBox->addItem("Disabled");
+		uiElements.hapticFeedbackComboBox->addItem(tr("Disabled"));
 
 		for(auto index = 0; index < devices.size(); ++index)
 		{
@@ -100,9 +101,9 @@ ControllerConfigDialog::~ControllerConfigDialog()
 void ControllerConfigDialog::PrepareBindingsView(uint32 padIndex)
 {
 	CInputBindingModel* model = new CInputBindingModel(this, m_inputManager, padIndex);
-	model->setHeaderData(0, Qt::Orientation::Horizontal, QVariant("Button"), Qt::DisplayRole);
-	model->setHeaderData(1, Qt::Orientation::Horizontal, QVariant("Binding Type"), Qt::DisplayRole);
-	model->setHeaderData(2, Qt::Orientation::Horizontal, QVariant("Binding Value"), Qt::DisplayRole);
+	model->setHeaderData(0, Qt::Orientation::Horizontal, QVariant(tr("Button")), Qt::DisplayRole);
+	model->setHeaderData(1, Qt::Orientation::Horizontal, QVariant(tr("Binding Type")), Qt::DisplayRole);
+	model->setHeaderData(2, Qt::Orientation::Horizontal, QVariant(tr("Binding Value")), Qt::DisplayRole);
 	assert(padIndex < m_padUiElements.size());
 	auto bindingsView = m_padUiElements[padIndex].bindingsView;
 	bindingsView->setModel(model);
@@ -185,7 +186,7 @@ void ControllerConfigDialog::bindingsViewDeleteItem()
 	{
 		return;
 	}
-	auto message = QString("Clear %1 binding(s)?").arg(selRows.size());
+	auto message = tr("Clear %1 binding(s)?").arg(selRows.size());
 	auto result = QMessageBox::question(this, tr("Clear bindings"), message, QMessageBox::Ok, QMessageBox::Cancel);
 	if(result == QMessageBox::Ok)
 	{
@@ -255,11 +256,11 @@ void ControllerConfigDialog::AutoConfigureKeyboard(uint32 padIndex, CInputBindin
 int ControllerConfigDialog::OpenBindConfigDialog(uint32 padIndex, uint32 buttonIndex)
 {
 	auto button = static_cast<PS2::CControllerInfo::BUTTON>(buttonIndex);
-	std::string buttonName(PS2::CControllerInfo::m_buttonName[button]);
-	std::transform(buttonName.begin(), buttonName.end(), buttonName.begin(), ::toupper);
+	QString buttonName = ControllerButtonDisplayName(PS2::CControllerInfo::m_buttonName[button]);
 
 	InputEventSelectionDialog IESD(this);
-	IESD.Setup(buttonName.c_str(), m_inputManager, m_qtKeyInputProvider, m_qtMouseInputProvider, padIndex, button);
+	auto buttonNameUtf8 = buttonName.toUtf8();
+	IESD.Setup(buttonNameUtf8.constData(), m_inputManager, m_qtKeyInputProvider, m_qtMouseInputProvider, padIndex, button);
 	auto res = IESD.exec();
 	return res;
 }

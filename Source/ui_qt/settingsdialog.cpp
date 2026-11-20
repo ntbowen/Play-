@@ -3,9 +3,12 @@
 #include <cmath>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QCoreApplication>
 #include "ui_settingsdialog.h"
 #include "PS2VM_Preferences.h"
 #include "PreferenceDefs.h"
+#include "UiTranslator.h"
+#include "mainwindow.h"
 #include "../gs/GSH_OpenGL/GSH_OpenGL.h"
 #include "QStringUtils.h"
 
@@ -82,6 +85,9 @@ void SettingsDialog::changePage(QListWidgetItem* current, QListWidgetItem* previ
 
 void SettingsDialog::LoadPreferences()
 {
+	ui->comboBox_uiLanguage->blockSignals(true);
+	ui->comboBox_uiLanguage->setCurrentIndex(CAppConfig::GetInstance().GetPreferenceInteger(PREF_UI_LANGUAGE));
+	ui->comboBox_uiLanguage->blockSignals(false);
 	ui->comboBox_system_language->setCurrentIndex(CAppConfig::GetInstance().GetPreferenceInteger(PREF_SYSTEM_LANGUAGE));
 	ui->checkBox_limitFrameRate->setChecked(CAppConfig::GetInstance().GetPreferenceBoolean(PREF_PS2_LIMIT_FRAMERATE));
 	ui->checkBox_showEECPUUsage->setChecked(CAppConfig::GetInstance().GetPreferenceBoolean(PREF_UI_SHOWEECPUUSAGE));
@@ -103,6 +109,17 @@ void SettingsDialog::LoadPreferences()
 }
 
 //General Page ---------------------------------
+
+void SettingsDialog::on_comboBox_uiLanguage_currentIndexChanged(int index)
+{
+	CAppConfig::GetInstance().SetPreferenceInteger(PREF_UI_LANGUAGE, index);
+	UiTranslator::ApplyLanguage(*QCoreApplication::instance());
+	ui->retranslateUi(this);
+	if(auto* mainWindow = qobject_cast<MainWindow*>(parentWidget()))
+	{
+		mainWindow->OnUiLanguageChanged();
+	}
+}
 
 void SettingsDialog::on_comboBox_system_language_currentIndexChanged(int index)
 {
@@ -177,7 +194,7 @@ void SettingsDialog::on_button_vulkanDeviceInfo_clicked()
 {
 #if HAS_GSH_VULKAN
 	auto log = GSH_Vulkan::CDeviceInfo::GetInstance().GetLog();
-	QMessageBox::information(this, "Vulkan Device Info", log.c_str());
+	QMessageBox::information(this, tr("Vulkan Device Info"), log.c_str());
 #endif
 }
 

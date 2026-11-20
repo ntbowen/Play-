@@ -1,5 +1,6 @@
 #include "inputbindingmodel.h"
 #include "ControllerInfo.h"
+#include "ControllerButtonNames.h"
 #include "../input/InputBindingManager.h"
 
 #define CONFIG_PREFIX ("input")
@@ -30,14 +31,17 @@ QVariant CInputBindingModel::data(const QModelIndex& index, int role) const
 		switch(index.column())
 		{
 		case 0:
-		{
-			std::string str(PS2::CControllerInfo::m_buttonName[index.row()]);
-			std::transform(str.begin(), str.end(), str.begin(), ::toupper);
-			return QVariant(str.c_str());
-		}
-		break;
+			return QVariant(ControllerButtonDisplayName(PS2::CControllerInfo::m_buttonName[index.row()]));
+			break;
 		case 1:
-			return binding ? QVariant(binding->GetBindingTypeName()) : QVariant();
+		{
+			if(!binding) break;
+			QString typeName = binding->GetBindingTypeName();
+			if(typeName == "simplebinding") return QVariant(tr("Simple"));
+			if(typeName == "povhatbinding") return QVariant(tr("POV Hat"));
+			if(typeName == "simulatedaxisbinding") return QVariant(tr("Simulated Axis"));
+			return QVariant(typeName);
+		}
 			break;
 		case 2:
 			return binding ? QVariant(binding->GetDescription(m_inputManager).c_str()) : QVariant();

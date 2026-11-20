@@ -15,6 +15,8 @@ namespace Ui
 	class QBootablesView;
 }
 
+class QAction;
+
 class QBootablesView : public QWidget
 {
 	Q_OBJECT
@@ -25,6 +27,7 @@ public:
 	using BootCallback = std::function<void(const BootablesDb::Bootable&)>;
 
 	void SetupActions(BootCallback);
+	void Retranslate();
 	void AddMsgLabel(ElidedLabel*);
 	bool IsProcessing();
 
@@ -64,6 +67,8 @@ private:
 	std::atomic<bool> m_isProcessing = false;
 	BootableModelProxy* m_proxyModel = nullptr;
 	CContinuationChecker* m_continuationChecker = nullptr;
+	QAction* m_bootAction = nullptr;
+	QAction* m_removeAction = nullptr;
 
 	std::atomic<bool> m_coverProcessing = false;
 	BootCallback m_bootCallback;
